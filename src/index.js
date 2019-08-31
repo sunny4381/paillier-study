@@ -2,13 +2,14 @@ const queryString = require('query-string');
 const bigInt = require('big-integer');
 const paillier = require('paillier-js');
 const QRCode = require('qrcode');
+const base = 4
 
 // window.bigInt = bigInt;
 // window.paillier = paillier;
 
 const params = queryString.parse(location.search);
 if (!params.n || !params.g) {
-  const {publicKey, privateKey} = paillier.generateRandomKeys(2048);
+  const {publicKey, privateKey} = paillier.generateRandomKeys(128);
   params.n = publicKey.n.toString();
   params.g = publicKey.g.toString();
 
@@ -28,11 +29,11 @@ function messageToValue(message) {
   if (message === "c0") {
     value = bigInt(0);
   } else if (message === "c1") {
-    value = bigInt(1);
+    value = bigInt(base).pow(0);
   } else if (message === "c2") {
-    value = bigInt(4);
+    value = bigInt(base).pow(1);
   } else if (message === "c3") {
-    value = bigInt(16);
+    value = bigInt(base).pow(2);
   }
   return value;
 }
